@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Coste de Viaje</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            padding: 20px;
+        }
+
+        .container {
+            background-color: white;
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .resultado {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            text-align: center;
+            display: none;
+        }
+
+        .resultado h2 {
+            margin: 0 0 10px 0;
+            color: #333;
+        }
+
+        .resultado p {
+            margin: 10px 0;
+            font-size: 18px;
+            color: #555;
+        }
+
+        .total {
+            font-size: 32px;
+            color: #4CAF50;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Calculadora de Coste de Viaje</h1>
+
+        <div class="input-group">
+            <label>Gastos de alojamiento:</label>
+            <input type="number" id="alojamiento" placeholder="2000">
+        </div>
+
+        <div class="input-group">
+            <label>Gastos de alimentación:</label>
+            <input type="number" id="alimentacion" placeholder="1500">
+        </div>
+
+        <div class="input-group">
+            <label>Gastos de entretenimiento:</label>
+            <input type="number" id="entretenimiento" placeholder="1000">
+        </div>
+
+        <button onclick="calcularCoste()">Calcular</button>
+
+        <div class="resultado" id="resultado">
+            <h2>Resultado:</h2>
+            <p>Alojamiento: $<span id="resAlojamiento"></span></p>
+            <p>Alimentación: $<span id="resAlimentacion"></span></p>
+            <p>Entretenimiento: $<span id="resEntretenimiento"></span></p>
+            <hr>
+            <p>El coste total del viaje es:</p>
+            <div class="total" id="costoTotal"></div>
+        </div>
+    </div>
+
+    <script>
+        // Función para calcular el coste total
+        function calcularCoste() {
+            // Obtener elementos del DOM
+            const alojamiento = parseFloat(document.getElementById('alojamiento').value) || 0;
+            const alimentacion = parseFloat(document.getElementById('alimentacion').value) || 0;
+            const entretenimiento = parseFloat(document.getElementById('entretenimiento').value) || 0;
+
+            // Calcular el total
+            const total = alojamiento + alimentacion + entretenimiento;
+
+            // Mostrar resultados usando el DOM
+            document.getElementById('resAlojamiento').textContent = alojamiento;
+            document.getElementById('resAlimentacion').textContent = alimentacion;
+            document.getElementById('resEntretenimiento').textContent = entretenimiento;
+            document.getElementById('costoTotal').textContent = '$' + total;
+
+            // Mostrar el div de resultado
+            document.getElementById('resultado').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
