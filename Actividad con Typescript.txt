@@ -53,8 +53,9 @@ function getNombre(nombre: string, apellido?: string): string {
    return nombre + apellido;
 }
 
-console.log(getNombre("alejandro","barraza"));
-console.log(getNombre("maria","Barreras")); 
-console.log(getNombre("Jesus","Inzunza"));
-console.log(getNombre("Adrian","calleros"));
-console.log(getNombre("Ernesto","Ruiz"));
+console.log(getNombre("Sofia ","Reyes"));
+console.log(getNombre("Anethzy ","Uriarte")); 
+console.log(getNombre("Jesus ","Inzunza"));
+console.log(getNombre("Genky ","DelCampo"));
+
+console.log(getNombre("Joselyn ","Angulo"));
