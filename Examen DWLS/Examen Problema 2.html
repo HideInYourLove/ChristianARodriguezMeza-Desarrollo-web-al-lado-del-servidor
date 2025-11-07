@@ -1,0 +1,519 @@
+/*
+Nombre: Christian Alexander Rodriguez Meza
+Grupo: 2-2
+Examen Unidad 3
+*/
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tienda de Libros</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #c75b5b 0%, #a04545 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #c75b5b 0%, #a04545 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .section {
+            padding: 30px;
+        }
+
+        .section.hidden {
+            display: none;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        input[type="text"],
+        input[type="tel"],
+        input[type="password"],
+        input[type="date"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: #c75b5b;
+        }
+
+        .checkbox-group {
+            margin-top: 10px;
+        }
+
+        .checkbox-item {
+            margin-bottom: 10px;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: auto;
+            margin-right: 10px;
+        }
+
+        .checkbox-item label {
+            display: inline;
+            font-weight: normal;
+        }
+
+        .error {
+            color: #e74c3c;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .error.show {
+            display: block;
+        }
+
+        input.invalid {
+            border-color: #e74c3c;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #c75b5b 0%, #a04545 100%);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            cursor: pointer;
+            width: 100%;
+            transition: transform 0.2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .user-info {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .user-info h3 {
+            color: #c75b5b;
+            margin-bottom: 10px;
+        }
+
+        .libro-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .libro-info {
+            flex: 1;
+        }
+
+        .libro-info h4 {
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .libro-precio {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2ecc71;
+        }
+
+        .btn-agregar {
+            background: #2ecc71;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .btn-agregar:hover {
+            background: #27ae60;
+        }
+
+        .pedido-lista {
+            background: #fff3cd;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .pedido-item {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .pedido-item:last-child {
+            border-bottom: none;
+        }
+
+        .calculo-section {
+            background: #e8f5e9;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .resultado {
+            background: #c75b5b;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+
+        .acepto-terminos {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .acepto-terminos input {
+            width: auto;
+            margin-right: 10px;
+        }
+
+        .acepto-terminos label {
+            font-weight: normal;
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📚 Librería Digital</h1>
+            <p>Crea tu cuenta y descubre tu próxima lectura</p>
+        </div>
+
+        <div id="registro-section" class="section">
+            <h2>Crear Cuenta</h2>
+            <form id="registro-form">
+                <div class="form-group">
+                    <label for="nombre">Nombre *</label>
+                    <input type="text" id="nombre" name="nombre" required>
+                    <div class="error" id="error-nombre">El nombre es obligatorio</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="apellidos">Apellidos *</label>
+                    <input type="text" id="apellidos" name="apellidos" required>
+                    <div class="error" id="error-apellidos">Los apellidos son obligatorios</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="telefono">Teléfono *</label>
+                    <input type="tel" id="telefono" name="telefono" placeholder="Ejemplo: 6671234567" required>
+                    <div class="error" id="error-telefono">Debe ingresar exactamente 10 dígitos numéricos</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Contraseña (mínimo 8 caracteres) *</label>
+                    <input type="password" id="password" name="password" required>
+                    <div class="error" id="error-password">La contraseña debe tener al menos 8 caracteres</div>
+                </div>
+
+                <div class="form-group">
+                    <label>Áreas de Interés *</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="programacion" name="interes" value="programacion">
+                            <label for="programacion">Programación</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="diseno" name="interes" value="diseno">
+                            <label for="diseno">Diseño</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="ciencias" name="interes" value="ciencias">
+                            <label for="ciencias">Ciencias</label>
+                        </div>
+                    </div>
+                    <div class="error" id="error-interes">Debe seleccionar al menos un área de interés</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="fecha-nacimiento">Fecha de Nacimiento *</label>
+                    <input type="date" id="fecha-nacimiento" name="fecha-nacimiento" required>
+                    <div class="error" id="error-fecha">La fecha de nacimiento es obligatoria</div>
+                </div>
+
+                <div class="acepto-terminos">
+                    <input type="checkbox" id="acepto" name="acepto" required>
+                    <label for="acepto">Acepto los términos de protección de datos *</label>
+                </div>
+                <div class="error" id="error-acepto">Debe aceptar los términos de protección de datos</div>
+
+                <button type="submit" class="btn">Agregar</button>
+            </form>
+        </div>
+
+        <div id="libros-section" class="section hidden">
+            <div class="user-info" id="user-info"></div>
+
+            <h2>Catálogo de Libros</h2>
+            <div id="catalogo-libros">
+                <div class="libro-item">
+                    <div class="libro-info">
+                        <h4>JavaScript: The Good Parts</h4>
+                        <p>Por Douglas Crockford</p>
+                    </div>
+                    <div>
+                        <div class="libro-precio">$25.99</div>
+                        <button class="btn-agregar" onclick="agregarLibro('JavaScript: The Good Parts', 25.99)">Agregar</button>
+                    </div>
+                </div>
+
+                <div class="libro-item">
+                    <div class="libro-info">
+                        <h4>Clean Code</h4>
+                        <p>Por Robert C. Martin</p>
+                    </div>
+                    <div>
+                        <div class="libro-precio">$32.50</div>
+                        <button class="btn-agregar" onclick="agregarLibro('Clean Code', 32.50)">Agregar</button>
+                    </div>
+                </div>
+
+                <div class="libro-item">
+                    <div class="libro-info">
+                        <h4>Design Patterns</h4>
+                        <p>Por Gang of Four</p>
+                    </div>
+                    <div>
+                        <div class="libro-precio">$45.00</div>
+                        <button class="btn-agregar" onclick="agregarLibro('Design Patterns', 45.00)">Agregar</button>
+                    </div>
+                </div>
+
+                <div class="libro-item">
+                    <div class="libro-info">
+                        <h4>The Pragmatic Programmer</h4>
+                        <p>Por Andrew Hunt</p>
+                    </div>
+                    <div>
+                        <div class="libro-precio">$38.75</div>
+                        <button class="btn-agregar" onclick="agregarLibro('The Pragmatic Programmer', 38.75)">Agregar</button>
+                    </div>
+                </div>
+
+                <div class="libro-item">
+                    <div class="libro-info">
+                        <h4>Introducción a la Física Cuántica</h4>
+                        <p>Por Richard Feynman</p>
+                    </div>
+                    <div>
+                        <div class="libro-precio">$42.99</div>
+                        <button class="btn-agregar" onclick="agregarLibro('Introducción a la Física Cuántica', 42.99)">Agregar</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pedido-lista" id="pedido-lista-container" style="display: none;">
+                <h3>📋 Lista de Pedidos</h3>
+                <div id="pedido-lista"></div>
+            </div>
+
+            <div class="calculo-section">
+                <h3>Cálculo del Total</h3>
+                
+                <div class="form-group">
+                    <label for="precio-total">Precio Total</label>
+                    <input type="number" id="precio-total" step="0.01" min="0" placeholder="0.00" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label for="iva-tipo">Tipo de IVA</label>
+                    <select id="iva-tipo">
+                        <option value="10">IVA Reducido (10%)</option>
+                        <option value="21">IVA Normal (21%)</option>
+                    </select>
+                </div>
+
+                <button class="btn" onclick="calcular()">Calcular</button>
+
+                <div class="resultado" id="resultado">
+                    Total: $0.00
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let pedidos = [];
+        let precioTotal = 0;
+
+        document.getElementById('registro-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            let valido = true;
+
+            const nombre = document.getElementById('nombre').value.trim();
+            const apellidos = document.getElementById('apellidos').value.trim();
+            const telefono = document.getElementById('telefono').value.trim();
+            const password = document.getElementById('password').value;
+            const fechaNacimiento = document.getElementById('fecha-nacimiento').value;
+            const acepto = document.getElementById('acepto').checked;
+
+            document.querySelectorAll('.error').forEach(e => e.classList.remove('show'));
+            document.querySelectorAll('input').forEach(e => e.classList.remove('invalid'));
+
+            if (!nombre) {
+                mostrarError('nombre');
+                valido = false;
+            }
+
+            if (!apellidos) {
+                mostrarError('apellidos');
+                valido = false;
+            }
+
+            const telefonoLimpio = telefono.replace(/\s/g, '');
+            if (telefonoLimpio.length !== 10 || !/^\d+$/.test(telefonoLimpio)) {
+                mostrarError('telefono');
+                valido = false;
+            }
+
+            if (password.length < 8) {
+                mostrarError('password');
+                valido = false;
+            }
+
+            const interesesSeleccionados = document.querySelectorAll('input[name="interes"]:checked');
+            if (interesesSeleccionados.length === 0) {
+                document.getElementById('error-interes').classList.add('show');
+                valido = false;
+            }
+
+            if (!fechaNacimiento) {
+                mostrarError('fecha');
+                valido = false;
+            }
+
+            if (!acepto) {
+                document.getElementById('error-acepto').classList.add('show');
+                valido = false;
+            }
+
+            if (valido) {
+                const intereses = Array.from(interesesSeleccionados).map(cb => cb.value).join(', ');
+                
+                document.getElementById('user-info').innerHTML = `
+                    <h3>Bienvenido/a</h3>
+                    <p><strong>Nombre:</strong> ${nombre} ${apellidos}</p>
+                    <p><strong>Teléfono:</strong> ${telefono}</p>
+                    <p><strong>Áreas de interés:</strong> ${intereses}</p>
+                `;
+
+                document.getElementById('registro-section').classList.add('hidden');
+                document.getElementById('libros-section').classList.remove('hidden');
+            }
+        });
+
+        function mostrarError(campo) {
+            document.getElementById(campo).classList.add('invalid');
+            document.getElementById('error-' + campo).classList.add('show');
+        }
+
+        function agregarLibro(nombre, precio) {
+            pedidos.push({ nombre, precio });
+            precioTotal += precio;
+
+            actualizarPedidos();
+        }
+
+        function actualizarPedidos() {
+            const container = document.getElementById('pedido-lista-container');
+            const lista = document.getElementById('pedido-lista');
+            
+            if (pedidos.length > 0) {
+                container.style.display = 'block';
+                
+                lista.innerHTML = pedidos.map((pedido, index) => `
+                    <div class="pedido-item">
+                        <span>${pedido.nombre}</span>
+                        <span>$${pedido.precio.toFixed(2)}</span>
+                    </div>
+                `).join('');
+
+                document.getElementById('precio-total').value = precioTotal.toFixed(2);
+            }
+        }
+
+        function calcular() {
+            const precio = parseFloat(document.getElementById('precio-total').value) || 0;
+            const ivaTipo = parseFloat(document.getElementById('iva-tipo').value);
+            
+            const iva = precio * (ivaTipo / 100);
+            const total = precio + iva;
+            
+            document.getElementById('resultado').innerHTML = `
+                <div>Subtotal: $${precio.toFixed(2)}</div>
+                <div>IVA (${ivaTipo}%): $${iva.toFixed(2)}</div>
+                <div style="margin-top: 10px; font-size: 28px;">Total: $${total.toFixed(2)}</div>
+            `;
+        }
+    </script>
+</body>
+</html>

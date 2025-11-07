@@ -1,0 +1,350 @@
+/*
+Nombre: Christian Alexander Rodriguez Meza
+Grupo: 2-2
+Examen Unidad 3
+*/
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Página Web</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+        }
+
+
+        .header-principal {
+            background-color: #3498db;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .section-principal {
+            padding: 20px;
+            background-color: #ecf0f1;
+            margin: 20px;
+        }
+
+        .article-uno {
+            background-color: #e74c3c;
+            color: white;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .article-dos {
+            background-image: url('https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 20px;
+            min-height: 300px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+        }
+
+        .enlaces-section {
+            background-color: #2ecc71;
+            padding: 20px;
+            margin: 20px;
+        }
+
+        .enlaces-section h2 {
+            color: white;
+            margin-bottom: 15px;
+        }
+
+        .enlaces-section ul {
+            list-style: none;
+        }
+
+        .enlaces-section li {
+            margin: 10px 0;
+        }
+
+        .enlaces-section a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            transition: all 0.3s;
+        }
+
+        .enlaces-section a:hover {
+            color: #f1c40f;
+            padding-left: 10px;
+        }
+
+        .footer-principal {
+            background-color: #34495e;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+
+        .catalogo-page {
+            display: none;
+        }
+
+        .catalogo-page.active {
+            display: block;
+        }
+
+        .header-catalogo {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .logo {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 15px;
+            background-color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .subtitulo {
+            background-color: #f8f9fa;
+            padding: 15px;
+            text-align: center;
+            color: #333;
+            font-style: italic;
+        }
+
+        .productos-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .producto-article {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 20px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .producto-article:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+
+        .producto-article h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 20px;
+        }
+
+        .producto-article p {
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .precio {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2ecc71;
+        }
+
+        .footer-catalogo {
+            background-color: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 30px;
+        }
+
+        .btn-volver {
+            display: inline-block;
+            background-color: #3498db;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 20px;
+            transition: background-color 0.3s;
+        }
+
+        .btn-volver:hover {
+            background-color: #2980b9;
+        }
+
+        .btn-catalogo {
+            display: inline-block;
+            background-color: #e74c3c;
+            color: white;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 18px;
+            margin-top: 15px;
+            transition: background-color 0.3s;
+        }
+
+        .btn-catalogo:hover {
+            background-color: #c0392b;
+        }
+    </style>
+</head>
+<body>
+    <div id="pagina-principal">
+        <header class="header-principal">
+            <h1>Bienvenido a Mi Página Web</h1>
+            <p>Este es el encabezado principal con información importante</p>
+        </header>
+
+        <section class="section-principal">
+            <h2>Sección Principal</h2>
+            <p>Esta es la sección principal que contiene dos artículos interesantes.</p>
+            
+            <article class="article-uno">
+                <h3>Primer Artículo - Tecnología y Desarrollo</h3>
+                <p>La tecnología web ha evolucionado enormemente en los últimos años. HTML5, CSS3 y JavaScript moderno nos permiten crear experiencias interactivas y atractivas para los usuarios. El desarrollo web actual requiere conocimientos sólidos en diseño responsivo, accesibilidad y optimización de rendimiento para ofrecer sitios web de calidad profesional.</p>
+            </article>
+
+            <article class="article-dos">
+                <h3>Segundo Artículo - Diseño Web Moderno</h3>
+                <p>Este artículo tiene una imagen de fondo en lugar de un color sólido, demostrando las capacidades de CSS para crear diseños atractivos. El diseño web moderno combina estética visual con funcionalidad práctica, asegurando que los sitios sean tanto hermosos como útiles para los visitantes.</p>
+            </article>
+        </section>
+
+        <section class="enlaces-section">
+            <h2>Enlaces de Interés</h2>
+            <ul>
+                <li><a href="https://www.github.com" target="_blank">→ GitHub - Plataforma de desarrollo colaborativo</a></li>
+                <li><a href="https://www.stackoverflow.com" target="_blank">→ Stack Overflow - Comunidad de programadores</a></li>
+                <li><a href="https://www.mdn.mozilla.org" target="_blank">→ MDN Web Docs - Documentación web</a></li>
+                <li><a href="https://www.w3schools.com" target="_blank">→ W3Schools - Tutoriales de programación</a></li>
+                <li><a href="https://www.freecodecamp.org" target="_blank">→ FreeCodeCamp - Aprende a programar gratis</a></li>
+            </ul>
+            
+            <div style="text-align: center;">
+                <a href="#" class="btn-catalogo" onclick="mostrarCatalogo(event)">Ver Catálogo de Equipos</a>
+            </div>
+        </section>
+
+        <footer class="footer-principal">
+            <p>&copy; 2025 - Mi Página Web - Todos los derechos reservados</p>
+        </footer>
+    </div>
+
+    <div id="pagina-catalogo" class="catalogo-page">
+        <a href="#" class="btn-volver" onclick="volverInicio(event)">← Volver al Inicio</a>
+        
+        <header class="header-catalogo">
+            <div class="logo">TC</div>
+            <h1>TechComputer Solutions</h1>
+            <p>Tu proveedor confiable de equipos de cómputo</p>
+        </header>
+
+        <div class="subtitulo">
+            <h2>Catálogo presentado por: [Tu Nombre Aquí]</h2>
+        </div>
+
+        <section class="productos-section">
+            <article class="producto-article">
+                <h3>Laptop Dell Inspiron 15</h3>
+                <p>Procesador Intel Core i7, 16GB RAM, 512GB SSD, pantalla Full HD de 15.6 pulgadas. Ideal para trabajo y entretenimiento.</p>
+                <div class="precio">$15,999.00</div>
+            </article>
+
+            <article class="producto-article">
+                <h3>PC de Escritorio HP Pavilion</h3>
+                <p>AMD Ryzen 5, 8GB RAM, 1TB HDD, tarjeta gráfica integrada. Perfecto para uso doméstico y oficina.</p>
+                <div class="precio">$12,499.00</div>
+            </article>
+
+            <article class="producto-article">
+                <h3>Monitor LG UltraWide 34"</h3>
+                <p>Resolución QHD 3440x1440, IPS, 75Hz, ideal para multitarea y diseño gráfico.</p>
+                <div class="precio">$8,999.00</div>
+            </article>
+
+            <article class="producto-article">
+                <h3>Teclado Mecánico Logitech G915</h3>
+                <p>Switches mecánicos GL, RGB LIGHTSYNC, conexión inalámbrica, batería de larga duración.</p>
+                <div class="precio">$3,299.00</div>
+            </article>
+
+            <article class="producto-article">
+                <h3>Mouse Gamer Razer DeathAdder</h3>
+                <p>Sensor óptico 20,000 DPI, 8 botones programables, iluminación RGB Chroma.</p>
+                <div class="precio">$1,499.00</div>
+            </article>
+
+            <article class="producto-article">
+                <h3>Impresora Multifuncional Epson</h3>
+                <p>Impresión, escaneo y copia. Sistema de tanques de tinta, WiFi, impresión a color de alta calidad.</p>
+                <div class="precio">$4,799.00</div>
+            </article>
+
+            <article class="producto-article">
+                <h3>Disco Duro Externo Seagate 2TB</h3>
+                <p>USB 3.0, portátil, compatible con PC y Mac, incluye software de respaldo automático.</p>
+                <div class="precio">$1,899.00</div>
+            </article>
+
+            <article class="producto-article">
+                <h3>Webcam Logitech C920</h3>
+                <p>Full HD 1080p, micrófono estéreo, corrección de luz automática, ideal para videoconferencias.</p>
+                <div class="precio">$1,299.00</div>
+            </article>
+
+            <article class="producto-article">
+                <h3>Router WiFi TP-Link AX3000</h3>
+                <p>WiFi 6, velocidad hasta 3000 Mbps, 4 antenas, cobertura para casas grandes.</p>
+                <div class="precio">$2,199.00</div>
+            </article>
+
+            <article class="producto-article">
+                <h3>Tarjeta Gráfica NVIDIA RTX 3060</h3>
+                <p>12GB GDDR6, Ray Tracing, ideal para gaming y diseño 3D. Alto rendimiento garantizado.</p>
+                <div class="precio">$9,999.00</div>
+            </article>
+        </section>
+
+        <footer class="footer-catalogo">
+            <p>&copy; 2025 - Desarrollo Web - Tecnologías de la Información</p>
+        </footer>
+    </div>
+
+    <script>
+        function mostrarCatalogo(event) {
+            event.preventDefault();
+            document.getElementById('pagina-principal').style.display = 'none';
+            document.getElementById('pagina-catalogo').classList.add('active');
+            window.scrollTo(0, 0);
+        }
+
+        function volverInicio(event) {
+            event.preventDefault();
+            document.getElementById('pagina-principal').style.display = 'block';
+            document.getElementById('pagina-catalogo').classList.remove('active');
+            window.scrollTo(0, 0);
+        }
+    </script>
+</body>
+</html>
