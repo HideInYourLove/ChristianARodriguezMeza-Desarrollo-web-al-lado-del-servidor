@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cool Center | Tienda Online</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}
+body{background:#f4f6f8;color:#333}
+header{
+  background:linear-gradient(135deg,#1e3c72,#2a5298);
+  color:white;
+  padding:20px 40px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+}
+nav a{color:white;margin-left:20px;text-decoration:none}
+nav a:hover{opacity:.7}
+button{
+  background:#2a5298;
+  color:white;
+  border:none;
+  padding:12px 25px;
+  border-radius:25px;
+  cursor:pointer;
+}
+button:hover{background:#1e3c72}
+.container{max-width:1200px;margin:auto;padding:40px}
+.hidden{display:none}
+
+.hero{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:40px;
+  background:white;
+}
+.hero img{width:100%;border-radius:20px}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:25px;
+}
+.card{
+  background:white;
+  padding:20px;
+  border-radius:20px;
+  box-shadow:0 10px 25px rgba(0,0,0,.08);
+}
+.card img{
+  width:100%;
+  height:200px;
+  object-fit:cover;
+  border-radius:15px;
+}
+.price{font-weight:700;margin:10px 0}
+
+.features{margin:15px 0;padding-left:20px}
+.features li{margin-bottom:6px;color:#555}
+
+input{
+  width:100%;
+  padding:10px;
+  margin:10px 0;
+  border-radius:10px;
+  border:1px solid #ccc;
+}
+
+@media(max-width:768px){
+  .hero{grid-template-columns:1fr}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>Cool Center</h1>
+  <nav>
+    <a href="#" onclick="mostrar('catalogo')">Inicio</a>
+    <a href="#" onclick="verCarrito()">Carrito</a>
+    <a href="#" onclick="mostrar('login')">Login</a>
+    <a href="#" onclick="mostrar('registro')">Registro</a>
+    <a href="#" id="logoutBtn" class="hidden" onclick="logout()">Salir</a>
+  </nav>
+</header>
+
+<!-- HERO -->
+<section class="container hero">
+  <div>
+    <h2>Tu tienda de tecnología favorita</h2>
+    <p>Encuentra los mejores productos electrónicos al mejor precio.</p>
+    <button onclick="mostrar('catalogo')">Ver productos</button>
+  </div>
+  <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8">
+</section>
+
+<!-- CATÁLOGO -->
+<section id="catalogo" class="container">
+  <h2>Productos</h2>
+  <div id="listaProductos" class="grid"></div>
+</section>
+
+<!-- DETALLE -->
+<section id="detalle" class="container hidden">
+  <button onclick="mostrar('catalogo')">← Volver</button>
+  <div class="card">
+    <img id="dImg">
+    <h2 id="dNombre"></h2>
+    <div class="price" id="dPrecio"></div>
+    <ul id="dFeatures" class="features"></ul>
+    <button onclick="agregarCarrito()">Agregar al carrito</button>
+  </div>
+</section>
+
+<!-- CARRITO -->
+<section id="carrito" class="container hidden">
+  <h2>Carrito</h2>
+  <div id="listaCarrito"></div>
+  <h3 id="totalCarrito"></h3>
+  <button onclick="mostrar('catalogo')">Seguir comprando</button>
+</section>
+
+<!-- LOGIN -->
+<section id="login" class="container hidden">
+  <h2>Iniciar sesión</h2>
+  <input type="email" id="loginEmail" placeholder="Email">
+  <input type="password" id="loginPass" placeholder="Contraseña">
+  <button onclick="login()">Entrar</button>
+</section>
+
+<!-- REGISTRO -->
+<section id="registro" class="container hidden">
+  <h2>Registro</h2>
+  <input type="text" id="regNombre" placeholder="Nombre">
+  <input type="email" id="regEmail" placeholder="Email">
+  <input type="password" id="regPass" placeholder="Contraseña">
+  <button onclick="registrar()">Registrarse</button>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+
+<script>
+/* ===== UTIL ===== */
+function mostrar(id){
+  document.querySelectorAll("section").forEach(s=>s.classList.add("hidden"));
+  document.getElementById(id).classList.remove("hidden");
+}
+
+/* ===== AUTH ===== */
+let usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
+let usuarioActivo = JSON.parse(localStorage.getItem("usuarioActivo")) || null;
+
+function hash(t){ return btoa(t); }
+
+function registrar(){
+  if(!regNombre.value||!regEmail.value||!regPass.value)
+    return toast("Todos los campos son obligatorios");
+  usuarios.push({email:regEmail.value,pass:hash(regPass.value)});
+  localStorage.setItem("usuarios",JSON.stringify(usuarios));
+  toast("Registro exitoso");
+  mostrar("login");
+}
+
+function login(){
+  let u = usuarios.find(u=>u.email==loginEmail.value && u.pass==hash(loginPass.value));
+  if(!u) return toast("Credenciales incorrectas");
+  usuarioActivo = u;
+  localStorage.setItem("usuarioActivo",JSON.stringify(u));
+  document.getElementById("logoutBtn").classList.remove("hidden");
+  toast("Bienvenido");
+  mostrar("catalogo");
+}
+
+function logout(){
+  usuarioActivo=null;
+  localStorage.removeItem("usuarioActivo");
+  document.getElementById("logoutBtn").classList.add("hidden");
+  toast("Sesión cerrada");
+}
+
+/* ===== PRODUCTOS (15 Modelos de Alta Gama) ===== */
+const productos = [
+ {id:1,nombre:"iPhone 15 Pro Max",precio:26599,ram:"8 GB",memoria:"256 GB",img:"https://www.dxomark.com/wp-content/uploads/medias/post-155689/Apple-iPhone-15-Pro-Max_-blue-titanium_featured-image-packshot-review.jpg",
+  features:["Marca: Apple","Cámara: 48 MP (Principal) + 12 MP (Teleobjetivo 5x)","Chip A17 Pro","Pantalla: 6.7\" OLED","Titanio de grado aeroespacial"]},
+
+ {id:2,nombre:"Samsung Galaxy S24 Ultra",precio:30999,ram:"12 GB",memoria:"512 GB",img:"https://images.samsung.com/mx/smartphones/galaxy-s24-ultra/images/galaxy-s24-ultra-highlights-color-titanium-yellow-back-mo.jpg?imbypass=true",
+  features:["Marca: Samsung","Cámara: 200 MP + 50 MP + 10 MP + 12 MP","Pantalla: 6.8\" Dynamic AMOLED 2X","Incluye S-Pen","Marco de Titanio"]},
+
+ {id:3,nombre:"Huawei Pura 80 Series",precio:39999,ram:"12 GB",memoria:"256 GB",img:"https://consumer.huawei.com/dam/content/dam/huawei-cbg-site/ecommerce/sa/new-events/2025/July/pura-80/skin/Pura-80-Pro-PCP-%E6%8D%A2%E8%82%A4_Wap.jpg",
+  features:["Marca: Huawei","Cámara:  Lente de alta resolución, como 40 MP en el Pro y 40 MP en el Ultra, 13 MP con enfoque automático, gran angular y buena calidad en selfies y retratos."]},
+
+ {id:4,nombre:"Huawei Mate X7",precio:48999,ram:"8 GB",memoria:"128 GB",img:"https://mobileinfo.com.mx/wp-content/uploads/2025/11/Huawei-Mate-X7-official-images.jpg",
+  features:["Marca: Huawei","Cámara: sensor principal de 48MP (o 50MP en algunas versiones), complementado por ultra gran angular de 5MP y sensores macro/profundidad de 2MP, con cámara frontal de 8MP"]},
+
+ {id:5,nombre:"Motorola Edge 50 Ultra",precio:19999,ram:"16 GB",memoria:"512 GB",img:"https://m.media-amazon.com/images/I/71NpFXmHDLL._AC_UF350,350_QL50_.jpg",
+  features:["Marca: Motorola","Cámara: 50 MP Principal + 64 MP Teleobjetivo","Acabado en madera real o cuero vegano","Pantalla pOLED 144Hz"]},
+
+ {id:6,nombre:"OnePlus 12",precio:18500,ram:"16 GB",memoria:"512 GB",img:"https://i.blogs.es/949e87/oneplus-12/840_560.jpeg",
+  features:["Marca: OnePlus","Cámara: Hasselblad de 4ª generación (50+64+48 MP)","Procesador Snapdragon 8 Gen 3","Carga de 100W"]},
+
+ {id:7,nombre:"Huawei Pura 70 Ultra",precio:27500,ram:"16 GB",memoria:"512 GB",img:"https://apsaramobile.com/cdn/shop/files/Black_08cf0bb4-1197-45db-9eca-c48a407600ed.png?v=1715144446&width=1080",
+  features:["Marca: Huawei","Cámara: Retráctil de 50 MP (Ultra Iluminación)","Cristal Kunlun Glass de alta resistencia","Carga inalámbrica 80W"]},
+ {id:8,nombre:"Motorola Razr 60 Series",precio:18999,ram:"12 GB",memoria:"256 GB",img:"https://http2.mlstatic.com/D_NQ_NP_697064-MLA95239234749_102025-O.webp",
+  features:["Marca: motorola","Cámara: cámara principal de 50 MP y una gran angular de 13 MP, además de una frontal de 32 MP"]},
+
+ {id:9,nombre:"Sony Xperia 1 V",precio:25600,ram:"12 GB",memoria:"256 GB",img:"https://images.unsplash.com/photo-1584006682522-dc17d6c0d9ac",
+  features:["Marca: Sony","Cámara: Sensor Exmor T de 52 MP optimizado para video","Pantalla 4K HDR OLED 21:9","Jack de 3.5mm para audio Hi-Res"]},
+
+ {id:10,nombre:"Moto G ",precio:24800,ram:"8 GB",memoria:"256 GB",img:"https://e01-expansion.uecdn.es/assets/multimedia/imagenes/2019/02/11/15498985712611.jpg",
+  features:["Marca: motorola"," ofrecen buenas cámaras (desde 50MP hasta 108MP) con IA, opciones de RAM (4GB, 6GB, 8GB o más con virtualización"]},
+
+ {id:11,nombre:"Oppo Find X7 Ultra",precio:22900,ram:"16 GB",memoria:"256 GB",img:"https://images.unsplash.com/photo-1511707171634-5f897ff02aa9",
+  features:["Marca: Oppo","Cámara: Doble Periscopio (Cuatro sensores de 50 MP)","Motor de imágenes HyperTone","Pantalla de 4500 nits"]},
+
+ {id:12,nombre:"Honor Magic6 Pro",precio:21000,ram:"12 GB",memoria:"512 GB",img:"https://cdn.kalvo.com/uploads/img/gallery/58351-honor-magic6-pro-6.jpg",
+  features:["Marca: Honor","Cámara: Teleobjetivo de 180 MP","Batería de Silicio-Carbono de 5600 mAh","Resistencia a caídas NanoCrystal Shield"]},
+
+ {id:13,nombre:"Vivo X100 Pro",precio:19500,ram:"16 GB",memoria:"512 GB",img:"https://i.blogs.es/13bb9a/vivo-x100-vivo-x100-pro-3/650_1200.jpeg",
+  features:["Marca: Vivo","Cámara: Óptica ZEISS APO (Sensor de 1 pulgada)","Chip de imagen V3","Procesador Dimensity 9300"]},
+
+ {id:14,nombre:"ZTE Nubia Z60 Ultra",precio:15800,ram:"16 GB",memoria:"256 GB",img:"https://images.unsplash.com/photo-1523206489230-c012c64b2b48",
+  features:["Marca: ZTE","Cámara: Lente de 35mm (50 MP) + Cámara bajo pantalla","Batería de 6000 mAh","Certificación IP68"]},
+
+ {id:15,nombre:"Samsung Galaxy Z Fold5",precio:35999,ram:"12 GB",memoria:"512 GB",img:"https://images.unsplash.com/photo-1678911820864-e2c567c655d7",
+  features:["Marca: Samsung (Plegable)","Cámara: Triple 50+10+12 MP","Pantalla interior de 7.6\"","Multitarea avanzada con S-Pen"]}
+];
+
+const listaProductos = document.getElementById("listaProductos");
+productos.forEach(p=>{
+ listaProductos.innerHTML += `
+ <div class="card">
+  <img src="${p.img}">
+  <h4>${p.nombre}</h4>
+  <div class="price">$${p.precio} MXN</div>
+  <button onclick="verDetalle(${p.id})">Ver detalles</button>
+ </div>`;
+});
+
+/* ===== DETALLE ===== */
+let productoActual=null;
+function verDetalle(id){
+ productoActual = productos.find(p=>p.id===id);
+ mostrar("detalle");
+ dImg.src=productoActual.img;
+ dNombre.textContent=productoActual.nombre;
+ dPrecio.textContent="$"+productoActual.precio+" MXN";
+ dFeatures.innerHTML="";
+ productoActual.features.forEach(f=>dFeatures.innerHTML+=`<li>${f}</li>`);
+}
+
+/* ===== CARRITO ===== */
+let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+
+function agregarCarrito(){
+ if(!usuarioActivo) return toast("Debes iniciar sesión");
+ carrito.push(productoActual);
+ localStorage.setItem("carrito",JSON.stringify(carrito));
+ toast("Producto agregado al carrito");
+}
+
+function verCarrito(){
+ mostrar("carrito");
+ let total=0;
+ listaCarrito.innerHTML="";
+ carrito.forEach((p,i)=>{
+  total+=p.precio;
+  listaCarrito.innerHTML+=`
+   <div class="card">
+    ${p.nombre} - $${p.precio}
+    <button onclick="eliminar(${i})">Eliminar</button>
+   </div>`;
+ });
+ totalCarrito.textContent="Total: $"+total+" MXN";
+}
+
+function eliminar(i){
+ carrito.splice(i,1);
+ localStorage.setItem("carrito",JSON.stringify(carrito));
+ verCarrito();
+}
+
+/* ===== TOAST ===== */
+function toast(m){
+ Toastify({text:m,duration:2000,gravity:"top",position:"right"}).showToast();
+}
+</script>
+
+</body>
+</html>
