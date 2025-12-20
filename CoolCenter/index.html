@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Cool Center</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- FUENTE -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <!-- TOAST -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+
+  <!-- TU STYLE ORIGINAL EXTERNO -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+
+<header>
+  <h1>Cool Center</h1>
+  <nav>
+    <a href="#" onclick="mostrar('catalogo')">Inicio</a>
+    <a href="#" onclick="verCarrito()">Carrito <span id="cartCount" class="cart-badge">0</span></a>
+    <a href="#" onclick="mostrar('login')" id="loginLink">Login</a>
+    <a href="#" onclick="mostrar('registro')" id="registroLink">Registro</a>
+    <a href="#" onclick="mostrar('perfil')" id="perfilBtn" class="hidden">👤 Perfil</a>
+    <a href="#" onclick="logout()" id="logoutBtn" class="hidden">Salir</a>
+  </nav>
+</header>
+
+<!-- BANNER -->
+<section id="promoBanner" style="background:linear-gradient(135deg,#667eea,#764ba2);color:white;padding:15px 0;overflow:hidden">
+  <div class="banner-scroll" style="display:flex;gap:50px;animation:scroll 45s linear infinite;white-space:nowrap">
+    <div style="display:flex;gap:50px">
+      <span style="display:flex;align-items:center;gap:10px">🎉 <strong>¡OFERTAS ESPECIALES!</strong> Hasta 30% de descuento</span>
+      <span style="display:flex;align-items:center;gap:10px">✨ <strong>PRODUCTOS NUEVOS</strong> Las últimas novedades tecnológicas</span>
+      <span style="display:flex;align-items:center;gap:10px">🔒 <strong>COMPRA SEGURA</strong> Transacciones 100% protegidas</span>
+      <span style="display:flex;align-items:center;gap:10px">🛡️ <strong>GARANTÍA EXTENDIDA</strong> Protección en todos tus productos</span>
+      <span style="display:flex;align-items:center;gap:10px">🚚 <strong>ENVÍO GRATIS</strong> En compras mayores a $1,000</span>
+      <span style="display:flex;align-items:center;gap:10px">💳 <strong>MESES SIN INTERESES</strong> Hasta 12 MSI disponibles</span>
+    </div>
+    <div style="display:flex;gap:50px">
+      <span style="display:flex;align-items:center;gap:10px">🎉 <strong>¡OFERTAS ESPECIALES!</strong> Hasta 30% de descuento</span>
+      <span style="display:flex;align-items:center;gap:10px">✨ <strong>PRODUCTOS NUEVOS</strong> Las últimas novedades tecnológicas</span>
+      <span style="display:flex;align-items:center;gap:10px">🔒 <strong>COMPRA SEGURA</strong> Transacciones 100% protegidas</span>
+      <span style="display:flex;align-items:center;gap:10px">🛡️ <strong>GARANTÍA EXTENDIDA</strong> Protección en todos tus productos</span>
+      <span style="display:flex;align-items:center;gap:10px">🚚 <strong>ENVÍO GRATIS</strong> En compras mayores a $3,000</span>
+      <span style="display:flex;align-items:center;gap:10px">💳 <strong>MESES SIN INTERESES</strong> Hasta 12 MSI disponibles</span>
+    </div>
+  </div>
+</section>
+
+<!-- HERO -->
+<section class="container hero">
+  <div>
+    <h2>Tu tienda de tecnología favorita</h2>
+    <p>Encuentra los mejores productos al mejor precio</p>
+    <button onclick="mostrar('catalogo')">Ver productos</button>
+  </div>
+  <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8">
+</section>
+
+<!-- CATÁLOGO -->
+<section id="catalogo" class="container">
+  <h2>Productos</h2>
+
+  <div class="filters">
+    <select id="filtroCategoria" onchange="filtrarProductos()">
+      <option value="todos">Todos</option>
+      <option value="celulares">Celulares</option>
+      <option value="monitores">Monitores</option>
+      <option value="teclados">Teclados</option>
+      <option value="laptops">Laptops</option>
+    </select>
+
+    <select id="ordenPrecio" onchange="filtrarProductos()">
+      <option value="ninguno">Sin ordenar</option>
+      <option value="menor">Menor a mayor</option>
+      <option value="mayor">Mayor a menor</option>
+    </select>
+  </div>
+
+  <div id="listaProductos" class="grid"></div>
+</section>
+
+<!-- DETALLE -->
+<section id="detalle" class="container hidden">
+  <button onclick="mostrar('catalogo')">← Volver</button>
+  <div class="card">
+    <img id="dImg">
+    <h2 id="dNombre"></h2>
+    <div class="rating">
+      <span id="dStars" class="stars"></span>
+      <span id="dRating"></span>
+    </div>
+    <div class="price" id="dPrecio"></div>
+    <ul id="dFeatures" class="features"></ul>
+    <button onclick="agregarCarrito()">Agregar al carrito</button>
+  </div>
+</section>
+
+<!-- CARRITO -->
+<section id="carrito" class="container hidden">
+  <h2>Carrito</h2>
+  <div id="listaCarrito"></div>
+  <h3 id="totalCarrito"></h3>
+  <button onclick="mostrar('catalogo')">Seguir comprando</button>
+  <button onclick="mostrar('pago')">Pagar</button>
+</section>
+
+<!-- PAGO -->
+<section id="pago" class="container hidden">
+  <button onclick="verCarrito()">← Volver al carrito</button>
+
+  <div class="card" style="max-width:600px;margin:20px auto">
+    <h2>Método de Pago</h2>
+
+    <div style="margin:20px 0">
+      <label style="display:flex;align-items:center;gap:10px;cursor:pointer">
+        <input type="radio" name="tipoPago" value="tdc" checked onchange="cambiarTipoPago()">
+        <strong>Tarjeta de Crédito</strong>
+      </label>
+
+      <label style="display:flex;align-items:center;gap:10px;cursor:pointer">
+        <input type="radio" name="tipoPago" value="tdd" onchange="cambiarTipoPago()">
+        <strong>Tarjeta de Débito</strong>
+      </label>
+    </div>
+
+    <!-- DATOS TARJETA -->
+    <div style="background:#f8f9fa;padding:20px;border-radius:10px">
+      <h3 id="tipoTarjetaTexto">Datos de Tarjeta</h3>
+
+      <label>Número de tarjeta</label>
+      <input type="text" id="numTarjeta" maxlength="19" oninput="formatearTarjeta(this)">
+
+      <label>Nombre del titular</label>
+      <input type="text" id="nombreTitular">
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:15px">
+        <div>
+          <label>Fecha expiración</label>
+          <input type="text" id="fechaExp" maxlength="5" oninput="formatearFecha(this)">
+        </div>
+        <div>
+          <label>CVV</label>
+          <input type="text" id="cvv" maxlength="4">
+        </div>
+      </div>
+    </div>
+
+    <!-- RESUMEN -->
+    <div style="background:#e8f5e9;padding:15px;border-radius:10px;margin:20px 0">
+      <h3>Resumen</h3>
+      <p>Subtotal: <strong id="subtotalPago">$0 MXN</strong></p>
+      <p>IVA (16%): <strong id="ivaPago">$0 MXN</strong></p>
+      <p>Total: <strong id="totalPago">$0 MXN</strong></p>
+    </div>
+
+    <button onclick="procesarPago()" style="width:100%">
+      Pagar ahora
+    </button>
+  </div>
+</section>
+
+<!-- LOGIN -->
+<section id="login" class="container hidden">
+  <h2>Login</h2>
+  <input id="loginEmail" type="email" placeholder="Email">
+  <input id="loginPass" type="password" placeholder="Contraseña">
+  <button onclick="login()">Entrar</button>
+</section>
+
+<!-- REGISTRO -->
+<section id="registro" class="container hidden">
+  <h2>Registro</h2>
+  <input id="regNombre" placeholder="Nombre">
+  <input id="regEmail" type="email" placeholder="Email">
+  <input id="regPass" type="password" placeholder="Contraseña">
+  <button onclick="registrar()">Registrarse</button>
+</section>
+
+<!-- PERFIL -->
+<section id="perfil" class="container hidden">
+  <h2>Mi Perfil</h2>
+  
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:30px;margin-top:30px">
+    
+    <!-- Información Personal -->
+    <div class="card">
+      <h3 style="color:#2a5298;margin-bottom:20px">👤 Información Personal</h3>
+      
+      <div style="text-align:center;margin-bottom:20px">
+        <div style="width:120px;height:120px;border-radius:50%;overflow:hidden;margin:0 auto 15px;border:4px solid #2a5298;background:#f0f0f0">
+          <img id="perfilFotoPreview" src="" style="width:100%;height:100%;object-fit:cover">
+        </div>
+        <input type="file" id="perfilFoto" accept="image/*" onchange="cambiarFotoPerfil()" style="display:none">
+        <button onclick="document.getElementById('perfilFoto').click()" style="font-size:14px;padding:8px 15px">Cambiar foto</button>
+      </div>
+      
+      <label><strong>Nombre</strong></label>
+      <input type="text" id="perfilNombre" placeholder="Nombre">
+      
+      <label><strong>Email</strong></label>
+      <input type="email" id="perfilEmail" placeholder="Email" disabled style="background:#f5f5f5">
+      
+      <button onclick="actualizarPerfil()" style="width:100%;margin-top:15px">💾 Guardar cambios</button>
+    </div>
+    
+    <!-- Cambiar Contraseña -->
+    <div class="card">
+      <h3 style="color:#2a5298;margin-bottom:20px">🔒 Cambiar Contraseña</h3>
+      
+      <label><strong>Contraseña actual</strong></label>
+      <input type="password" id="passActual" placeholder="Contraseña actual">
+      
+      <label><strong>Nueva contraseña</strong></label>
+      <input type="password" id="passNueva" placeholder="Nueva contraseña">
+      
+      <label><strong>Confirmar nueva contraseña</strong></label>
+      <input type="password" id="passConfirmar" placeholder="Confirmar contraseña">
+      
+      <button onclick="cambiarPassword()" style="width:100%;margin-top:15px">🔑 Cambiar contraseña</button>
+    </div>
+  </div>
+  
+  <!-- Historial de Compras -->
+  <div class="card" style="margin-top:30px">
+    <h3 style="color:#2a5298;margin-bottom:20px">📦 Historial de Compras</h3>
+    <div id="historialCompras"></div>
+  </div>
+  
+  <!-- Métodos de Pago -->
+  <div class="card" style="margin-top:30px">
+    <h3 style="color:#2a5298;margin-bottom:20px">💳 Métodos de Pago Guardados</h3>
+    <div id="metodosPago"></div>
+  </div>
+</section>
+
+<!-- SCRIPTS -->
+<script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+<script src="js/toast.js"></script>
+<script src="js/main.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/productos.js"></script>
+<script src="js/carrito.js"></script>
+<script src="js/pago.js"></script>
+<script src="js/perfil.js"></script>
+
+</body>
+</html>
